@@ -31,11 +31,12 @@ function Tile:draw(tileList)
 	love.graphics.setColor(255, 255, 255)
 	
 	if self.node > 0 then
-		love.graphics.setColor(125, 125, 255)
+		--love.graphics.setColor(125, 125, 255)
 	end
 	
-	if self.color then
-		love.graphics.setColor(255, 0, 125)
+	--if self.color then
+	if self.x == game.hoverX and self.y == game.hoverY then
+		love.graphics.setColor(57, 89, 230)
 	end
 	
 	for i = 1, #self.tiles do
@@ -44,9 +45,12 @@ function Tile:draw(tileList)
 		y = y - height -- move higher tiles up
 		
 		local tileType = self.tiles[i]
-		love.graphics.draw(tileList[tileType].image, x, y)
+		if tileType > 0 then
+			love.graphics.draw(tileList[tileType].image, x, y)
+		end
 	end
 	
+	--[[
 	if self.node > 0 then
 		local x, y = self.screenX, self.screenY
 		local height = (#self.tiles-1)*self.heightDif
@@ -56,7 +60,14 @@ function Tile:draw(tileList)
 		y = y + self.tileHeight/2
 		
 		love.graphics.print(self.node, x, y)
-	end
+	end]]
+	
+	--[[
+	if self.tiles[#self.tiles] == 9 then
+		love.graphics.setColor(255, 0, 255)
+		local tileScreenY = (self.y) * self.tileHeight - (#self.tiles*self.heightDif) + 50
+		love.graphics.circle('fill', self.screenX, tileScreenY, 20)
+	end]]
 	
 	love.graphics.setColor(255, 255, 255)
 end

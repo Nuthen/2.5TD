@@ -5,6 +5,8 @@ state = require 'libs.state'
 tween = require 'libs.tween'
 console = require 'libs.console'
 require 'libs.util'
+require 'libs.generalmath'
+require 'libs.tablestring'
 
 -- gamestates
 require 'states.menu'
@@ -14,6 +16,8 @@ require 'states.game'
 require 'entities.map'
 require 'entities.tile'
 require 'entities.enemy'
+require 'entities.tower'
+require 'entities.enemyController'
 
 function love.load()
 	love.window.setTitle(config.windowTitle)
