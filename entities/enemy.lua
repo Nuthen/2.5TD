@@ -27,9 +27,9 @@ function Enemy:initialize(health, speed)
 	local pixelHeight = (self.height)*self.heightDif
 	self.screenY = self.screenY - pixelHeight -- move higher tiles up
 	
-	self.maxHealth = health or 20
+	self.maxHealth = health
 	self.health = self.maxHealth
-	self.maxSpeed = speed or 100
+	self.maxSpeed = speed
 	self.speed = self.maxSpeed
 	
 	self.dir = nil

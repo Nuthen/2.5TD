@@ -168,7 +168,6 @@ end
 function Map:pixelToTile(screenX, screenY)
 	local x = math.floor(screenX / self.tileWidth)+1
 	local y = math.floor((screenY) / 80)+1
-	--error(screenY..' '..y)
 	
 	return x, y
 end

@@ -18,6 +18,7 @@ require 'entities.tile'
 require 'entities.enemy'
 require 'entities.tower'
 require 'entities.enemyController'
+require 'entities.towerController'
 
 function love.load()
 	love.window.setTitle(config.windowTitle)

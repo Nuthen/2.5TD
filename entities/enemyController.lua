@@ -6,7 +6,10 @@ function EnemyController:initialize()
 	self.spawnCount = 3
 	
 	self.timer = 0
-	self.spawnSep = 3
+	self.spawnSep = 2
+	
+	self.statsMin = 3
+	self.statsMax = 5
 end
 
 function EnemyController:update(dt)
@@ -25,10 +28,10 @@ function EnemyController:update(dt)
 end
 
 function EnemyController:spawn()
-	local total = game.wave*(3+math.random(-2, 2))
-	local hp = math.random(1, total) + 1
-	local speed = total - hp + 3
-	table.insert(self.enemies, Enemy:new(hp*2, speed*30))
+	local total = game.wave*math.random(self.statsMin, self.statsMax)
+	local hp = math.random(1, total)
+	local speed = total - hp
+	table.insert(self.enemies, Enemy:new((hp+game.wave/2)*2, (speed+game.wave/2)*30))
 end
 
 function EnemyController:checkDelete()
@@ -53,4 +56,5 @@ end
 function EnemyController:newWave()
 	game:newWave()
 	self.spawnCount = game.wave*3
+	--self.spawnSep = 2 / (game.wave/5)
 end

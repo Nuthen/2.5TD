@@ -6,8 +6,9 @@ function game:enter()
     self.camera = {x = 0, y = 0, speed = 10}
 	self.map = Map:new('data/levels/savelevel.txt')
 	
-	self.towers = {}
 	self.enemyController = EnemyController:new()
+	
+	self.towerController = TowerController:new()
 	
 	self.wave = 1
 	
@@ -20,6 +21,8 @@ function game:enter()
 	self.money = 8
 	
 	self.lives = 5
+	
+	self.activeTower = nil
 end
 
 function game:newWave()
@@ -53,7 +56,8 @@ function game:update(dt)
 	
 	local x, y = love.mouse.getPosition()
 	local tileX, tileY = game.map:pixelToTile(x-self.camera.x, y-50-self.camera.y)
-		--error(self.map:getTile(tileX, tileY))
+	
+	
 	if self.map:getTile(tileX, tileY) > 0 then
 		if tileX ~= self.hoverX or tileY ~= self.hoverY then
 			self.hoverX = tileX
@@ -61,20 +65,12 @@ function game:update(dt)
 			self.map:drawCanvas()
 		end
 		
-		for k, tower in pairs(self.towers) do
-			if tower.x == tileX and tower.y == tileY then
-				tower:hover(true)
-			else
-				tower:hover(false)
-			end
-		end
+		self.towerController:checkHover(tileX, tileY)
 	end
 	
 	self.enemyController:update(dt)
 	
-	for k, tower in pairs(self.towers) do
-		tower:update(dt)
-	end
+	self.towerController:update(dt)
 	
 	self.enemyController:checkDelete()
 	
@@ -91,46 +87,36 @@ function game:mousepressed(x, y, mbutton)
         return
     end
 	
-	if mbutton == 'l' then
-		local tileX, tileY = game.map:pixelToTile(x-self.camera.x, y-50-self.camera.y)
-		local tileType = self.map:getTile(tileX, tileY)
-		if tileType > 0 and tileType ~= 4 and tileType <= 6 then
-			local clear = true
-			for k, tower in pairs(self.towers) do
-				if tower.x == tileX and tower.y == tileY then
-					clear = false
-				end
-			end
-			
-			if clear then
-				if self.money >= 2 then
-					table.insert(self.towers, Tower:new(tileX, tileY))
-					self.money = self.money - 4
-				end
-			end
-		end
-	end
+	self.towerController:mousepressed(x, y, mbutton)
 end
 
 function game:draw()
+	love.graphics.setColor(255, 255, 255)
+
 	love.graphics.push()
 	love.graphics.translate(self.camera.x, self.camera.y)
 
 	self.map:draw()
 	
-	for k, tower in pairs(self.towers) do
-		tower:draw()
-	end
+	self.towerController:draw()
 	
 	self.enemyController:draw()
 	
 	love.graphics.pop()
    
-    love.graphics.setFont(font[48])
-    love.graphics.print(love.timer.getFPS(), 5, 5)
-	love.graphics.print('Money: '..self.money, 5, 55)
-	love.graphics.print('Lives: '..self.lives, 5, 105)
-	love.graphics.print('Wave: '..self.wave, 5, 155)
+	love.graphics.setColor(0, 0, 0)
+    love.graphics.setFont(font[24])
+    love.graphics.print('FPS: '..love.timer.getFPS(), 5, 5)
+	love.graphics.print('Money: '..self.money, 5, 35)
+	love.graphics.print('Lives: '..self.lives, 5, 65)
+	love.graphics.print('Wave: '..self.wave..' ('..self.enemyController.spawnCount+#self.enemyController.enemies..' left)', 5, 95)
+	love.graphics.print('Cost: '..self.towerController.cost, 5, 125)
+	
+	if self.activeTower then
+		love.graphics.setFont(font[22])
+		love.graphics.print('Tower Stats\nRange: '..self.activeTower.range..'\nFire Rate: '..self.activeTower.fireRate..'\nDamage: '..self.activeTower.damage..'\nLevel: '..self.activeTower.level..'\nUpgrade Cost: '..self.activeTower.upgradeCost..'\nKills: '..self.activeTower.kills, 5, 250)
+	end
+	love.graphics.setColor(255, 255, 255)
 end
 
 function game:loseLife()

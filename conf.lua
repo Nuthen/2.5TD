@@ -44,7 +44,7 @@ config = {
     filterModeMax = "nearest",
     anisotropy = 4,
 
-    font = 'fonts/OpenSans-Regular.ttf',
+    font = 'fonts/goodFont.otf',
     fontBold = 'fonts/OpenSans-Bold.ttf',
     fontLight = 'fonts/OpenSans-Light.ttf',
 }
