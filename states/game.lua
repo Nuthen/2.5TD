@@ -19,6 +19,7 @@ function game:enter()
 	self.hoverTileY = 1
 	
 	self.money = 8
+	self.waveMoneyGain = 4
 	
 	self.lives = 5
 	
@@ -27,7 +28,7 @@ end
 
 function game:newWave()
 	self.wave = self.wave + 1
-	--self.money = self.money + 5
+	self.money = self.money + self.waveMoneyGain
 end
 
 function game:update(dt)

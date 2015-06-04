@@ -124,11 +124,11 @@ end
 function Tower:upgrade()
 	local stat = math.random(1, 3)
 	if stat == 1 then
-		self.baseRange = self.baseRange + 1
+		self.baseRange = self.baseRange + 2
 	elseif stat == 2 then
-		self.baseFireRate = self.baseFireRate + 1
+		self.baseFireRate = self.baseFireRate + 2
 	else
-		self.baseDamage = self.baseDamage + 1
+		self.baseDamage = self.baseDamage + 2
 	end
 	
 	game.money = game.money - self.upgradeCost
@@ -137,20 +137,20 @@ function Tower:upgrade()
 	
 	local total = self.baseRange+self.baseFireRate+self.baseDamage
 	if self.level == 1 then
-		if total >= 10 then
+		--if total >= 3 then
 			self.level = 2
 			self.img = love.graphics.newImage('img/Character Cat Girl.png')
-		end
+		--end
 	elseif self.level == 2 then
-		if total >= 13 then
+		--if total >= 4 then
 			self.level = 3
 			self.img = love.graphics.newImage('img/Character Horn Girl.png')
-		end
+		--end
 	elseif self.level == 3 then
-		if total >= 16 then
+		--if total >= 5 then
 			self.level = 4
 			self.img = love.graphics.newImage('img/Character Princess Girl.png')
-		end
+		--end
 	end
 end
 
